@@ -1,7 +1,7 @@
 # xArm Galactic Docker + Unity
 This repository contains the Docker setup for ROS 2 Galactic and basic Unity integration with the xArm robot. All commands and notes are together for quick reference.
 
-The Dockerfile will work using Galactic driver for the uf850 xarm model.
+The Dockerfile will work using Galactic driver for the uf850 xarm model. Currently the dockerfile has been tested and works.
 
 # Docker
 build and run the Dockerfile
@@ -67,3 +67,4 @@ Start ROS TCP server inside Docker
 ros2 run ros_tcp_endpoint default_server_endpoint
 #listens to Unity TCP endpoint
 ```
+
