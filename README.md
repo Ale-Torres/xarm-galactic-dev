@@ -1,11 +1,43 @@
 # xArm Galactic Docker + Unity
 This repository contains the Docker setup for ROS 2 Galactic and basic Unity integration with the xArm robot. All commands and notes are together for quick reference.
 
-The Dockerfile will work using Galactic driver for the uf850 xarm model. Currently the dockerfile has been tested and works.
+The Dockerfile works with the Galactic driver for the **UF850 xArm model**.
+
+## Quickstart
+1. Clone this repo (Docker setup):  
+   `git clone https://github.com/Ale-Torres/xarm-galactic-dev.git`
+2. Clone xArm ROS 2 drivers into your workspace:  
+   `git clone --recurse-submodules -b galactic https://github.com/xArm-Developer/xarm_ros2.git`
+3. Build & run Docker:  
+   `docker compose up -d`
+
+
+# Prerequisites
+Before using this setup, make sure you have:
+
+- Docker & Docker Compose
+- ROS 2 Galactic installed (on host, optional for some steps)
+- Unity (optional, for visualization and ROS TCP endpoint)
+- The xArm ROS2 Galactic repository cloned (https://github.com/xArm-Developer/xarm_ros2)  
+
+
+```bash
+# Navigate to your workspace
+mkdir -p ~/dev_ws/src
+cd ~/dev_ws/src
+
+# Clone the xArm ROS2 Galactic branch
+git clone --recurse-submodules -b galactic https://github.com/xArm-Developer/xarm_ros2.git
+```
+
 
 # Docker
-build and run the Dockerfile
+Build and run the Docker container
 ```bash
+
+#Clone this repo if you haven’t already
+git clone https://github.com/Ale-Torres/xarm-galactic-dev.git
+
 # Navigate to Docker folder
 cd docker
 
@@ -14,14 +46,15 @@ docker compose build
 docker compose up -d
 
 # Open a shell in the running container
-docker exec -it <container_name> bash
+docker ps  # check NAME or CONTAINER ID of your container
+docker exec -it <container_name_or_id> bash
 ```
 
 # Gazebo Simulation
 
-Enable display forwarding for Gazebo (Gazebo is recomended for simulation)
+Enable display forwarding for Gazebo (Gazebo is recommended for simulation)
 ```bash
-
+# Enable display forwarding (for Gazebo and RViz)
 echo $DISPLAY
 export DISPLAY=host.docker.internal:0
 
@@ -62,9 +95,16 @@ ros2 run xarm_moveit_servo xarm_keyboard_input
 
 Start ROS TCP server inside Docker
 
+To bridge Unity and ROS 2 you need:
+
+- [ROS-TCP-Endpoint](https://github.com/Unity-Technologies/ROS-TCP-Endpoint) (runs inside ROS/Docker)
+- [ROS-TCP-Connector](https://github.com/Unity-Technologies/ROS-TCP-Connector) (installed as a Unity package)
+
 ```bash
 
 ros2 run ros_tcp_endpoint default_server_endpoint
 #listens to Unity TCP endpoint
+#In Unity, install the ROS-TCP-Connector package and configure the ROS IP/Port to match your running Docker container (default 0.0.0.0:10000)
 ```
+
 
